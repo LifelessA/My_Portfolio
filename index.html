@@ -81,9 +81,45 @@
                 transform: rotate(0deg);
             }
         }
+
+        /* Custom Toast Notification */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #3776ab;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid #ffd343;
+        }
+
+        #toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
     </style>
 </head>
 <body class="overflow-x-hidden">
+
+    <!-- Toast Notification for Desktop -->
+    <div id="toast">Phone number copied to clipboard!</div>
 
     <!-- Header & Navbar -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass-effect">
@@ -120,7 +156,7 @@
                         <div class="absolute w-full h-full border-2 border-dashed border-yellow-400 rounded-full animate-spin-slow"></div>
                         <div class="absolute w-4/5 h-4/5 border-2 border-dashed border-blue-500 rounded-full animate-spin-reverse-slow"></div>
                         <!-- IMPORTANT: Replace this src with a URL to your actual profile picture -->
-                        <img src="my_photo.jpeg" alt="Aniket Raj" class="w-48 h-48 rounded-full border-4 border-gray-800 shadow-lg z-10">
+                        <img src="https://placehold.co/400x400/0d1117/c9d1d9?text=Aniket+Raj" alt="Aniket Raj" class="w-48 h-48 rounded-full border-4 border-gray-800 shadow-lg z-10">
                     </div>
 
                     <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-3">Hi, I'm Aniket Raj</h1>
@@ -245,7 +281,7 @@
                             </div>
                         </div>
                         <p class="mt-4 text-gray-300">
-                           Completed a comprehensive machine learning course, developing multiple prediction tools for phone prices, car prices, and heart disease detection.
+                            Completed a comprehensive machine learning course, developing multiple prediction tools for phone prices, car prices, and heart disease detection.
                         </p>
                         <a href="https://www.linkedin.com/posts/aniket-raj-146872208_activity-7373715121443041280-tOOf" target="_blank" class="inline-block mt-4 font-semibold text-yellow-400 hover:text-blue-400 transition">View Certificate <i class="fas fa-external-link-alt ml-2"></i></a>
                     </div>
@@ -273,13 +309,14 @@
             <div class="container mx-auto px-6 text-center reveal">
                 <h2 class="text-4xl font-bold mb-4">Get In <span class="vibrant-gradient-text">Touch</span></h2>
                 <p class="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">I'm currently looking for new opportunities. Whether you have a question or just want to say hi, feel free to reach out. I'll get back to you!</p>
-                <a href="aniket1000rajkr@gmail.com" class="inline-block px-10 py-4 rounded-md vibrant-gradient-bg text-white font-bold text-lg hover:opacity-90 transition-transform transform hover:scale-105">Say Hello</a>
+                <a href="mailto:aniket1000rajkr@gmail.com" class="inline-block px-10 py-4 rounded-md vibrant-gradient-bg text-white font-bold text-lg hover:opacity-90 transition-transform transform hover:scale-105">Say Hello</a>
 
                 <div class="flex justify-center space-x-8 mt-12">
                     <a href="https://github.com/LifelessA" target="_blank" class="text-4xl text-gray-400 hover:vibrant-gradient-text transition"><i class="fab fa-github"></i></a>
                     <a href="https://in.linkedin.com/in/aniket-raj-146872208/en" target="_blank" class="text-4xl text-gray-400 hover:vibrant-gradient-text transition"><i class="fab fa-linkedin"></i></a>
-                    <a href="aniket1000rajkr@gmail.com" class="text-4xl text-gray-400 hover:vibrant-gradient-text transition"><i class="fas fa-envelope"></i></a>
-                    <a href="+917007896304" class="text-4xl text-gray-400 hover:vibrant-gradient-text transition"><i class="fas fa-phone"></i></a>
+                    <a href="mailto:aniket1000rajkr@gmail.com" class="text-4xl text-gray-400 hover:vibrant-gradient-text transition"><i class="fas fa-envelope"></i></a>
+                    <!-- SMART PHONE LINK -->
+                    <a href="javascript:void(0)" onclick="handlePhoneClick('+917007896304')" class="text-4xl text-gray-400 hover:vibrant-gradient-text transition"><i class="fas fa-phone"></i></a>
                 </div>
             </div>
         </section>
@@ -294,6 +331,30 @@
 
 
     <script>
+        // SMART PHONE CLICK HANDLER
+        function handlePhoneClick(phoneNumber) {
+            // Check if user is on a mobile device
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            
+            if (isMobile) {
+                // For mobile: Open dialer
+                window.location.href = "tel:" + phoneNumber;
+            } else {
+                // For desktop/laptop: Copy to clipboard
+                const el = document.createElement('textarea');
+                el.value = phoneNumber;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+                
+                // Show custom toast message
+                const toast = document.getElementById("toast");
+                toast.className = "show";
+                setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+            }
+        }
+
         // Typed.js Animation
         var typed = new Typed('#typed-text', {
             strings: ['Python Developer', 'AI Developer', 'Prompt Engineer', 'Software Engineer', 'Tools Developer'],
@@ -350,5 +411,3 @@
     </script>
 </body>
 </html>
-
-
